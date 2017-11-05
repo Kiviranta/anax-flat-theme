@@ -98,7 +98,7 @@ check: npm-version
 .PHONY: less
 less: prepare-build
 	@$(call HELPTEXT,$@)
-	
+
 	$(foreach file, $(LESS), $(LESSC) $(LESS_OPTIONS) $(file) build/css/$(basename $(file)).css; )
 	$(foreach file, $(LESS), $(LESSC) --clean-css $(LESS_OPTIONS) $(file) build/css/$(basename $(file)).min.css; )
 
@@ -142,17 +142,22 @@ update:
 	git pull
 	git pull --recurse-submodules && git submodule foreach git pull origin master
 
-
+# target: upgrade-normalize       - Upgrade LESS module - Normalize.
+.PHONY: upgrade-normalize
+upgrade-normalize:
+	@$(call HELPTEXT,$@)
+	npm update normalize.css
+	cp node_modules/normalize.css/normalize.css modules/normalize.less
 
 # target: npm-install        - Install npm development npm packages.
 # target: npm-update         - Update npm development npm packages.
 # target: npm-version        - Display version for each npm package.
-.PHONY: npm-installl npm-update npm-version
-npm-install: 
+.PHONY: npm-install npm-update npm-version
+npm-install:
 	@$(call HELPTEXT,$@)
 	npm install
 
-npm-update: 
+npm-update:
 	@$(call HELPTEXT,$@)
 	npm update
 
